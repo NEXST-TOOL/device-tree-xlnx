@@ -105,7 +105,18 @@ proc generate {drv_handle} {
         set_drv_prop $drv_handle gmii2rgmii-phy-handle "$phy_name" reference
         set mdio_node [gen_mdio_node $drv_handle $node]
         gen_phy_node $mdio_node $phy_name $phya
-    }
+    } else {
+        set phy_name "phy0"
+		set phya 5
+		set phy_node [add_or_get_dt_node -l ${phy_name} -n phy -u $phya -p $node]
+		hsi::utils::add_new_dts_param "${phy_node}" "reg" $phya int
+		hsi::utils::add_new_dts_param "${phy_node}" "ti,rx-internal-delay" 8 int
+		hsi::utils::add_new_dts_param "${phy_node}" "ti,tx-internal-delay" 10 int
+		hsi::utils::add_new_dts_param "${phy_node}" "ti,fifo-depth" 1 int
+		hsi::utils::add_new_dts_param "${phy_node}" "ti,rxctrl-strap-worka" "" boolean
+		set_drv_prop $drv_handle "phy-handle" ${phy_name} reference
+	}
+
     set is_pcspma [get_cells -hier -filter {IP_NAME == gig_ethernet_pcs_pma}]
     if {![string_is_empty ${is_pcspma}] && $phymode == 2} {
         # if eth mode is sgmii and no external pcs/pma found
