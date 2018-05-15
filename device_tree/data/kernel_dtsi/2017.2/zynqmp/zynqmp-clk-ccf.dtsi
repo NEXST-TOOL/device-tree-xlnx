@@ -13,7 +13,7 @@
 
 / {
 	fclk0: fclk0 {
-		status = "disabled";
+		status = "okay";
 		compatible = "xlnx,fclk";
 		clocks = <&clkc 71>;
 	};
