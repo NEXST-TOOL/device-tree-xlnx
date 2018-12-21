@@ -13,13 +13,13 @@
 
 / {
 	fclk0: fclk0 {
-		status = "okay";
+		status = "disabled";
 		compatible = "xlnx,fclk";
 		clocks = <&clkc 71>;
 	};
 
 	fclk1: fclk1 {
-		status = "okay";
+		status = "disabled";
 		compatible = "xlnx,fclk";
 		clocks = <&clkc 72>;
 	};
