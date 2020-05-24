@@ -130,6 +130,13 @@ proc generate {drv_handle} {
         set mdio_node [gen_mdio_node $drv_handle $node]
         gen_phy_node $mdio_node $phy_name $phya
     }
+
+    if { $phymode == 2 } {
+      set fixed_link [add_or_get_dt_node -n "fixed-link" -p $node]
+      hsi::utils::add_new_dts_param "${fixed_link}" "speed" 1000 int
+      hsi::utils::add_new_dts_param "${fixed_link}" "full-duplex" "" boolean
+    }
+
     set is_pcspma [get_cells -hier -filter {IP_NAME == gig_ethernet_pcs_pma}]
     if {![string_is_empty ${is_pcspma}] && $phymode == 2} {
         # if eth mode is sgmii and no external pcs/pma found
